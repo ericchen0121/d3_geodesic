@@ -22,15 +22,38 @@
   left: 0;
 }
 
+#label1 {
+  position: absolute;
+  top: 225px;
+  left: 100px;
+}
+
+#label2 {
+  position: absolute;
+  top: 225px;
+  left: 750px;
+}
+
+
 </style>
-<div id="subdivision">
+<!-- <div id="subdivision">
   <input id ="one" type="range" min="1" max="12" value="9">
   <input id="two" type="range" min="1" max="12" value="5">
   <output name="subdivision"></output>
-</div>
+</div> -->
 <div class="wrapper">
   <div id="geodesic"></div>
   <div id="geodesic2"></div>
+  <div class='content'>
+    <div id="label1">
+      <div>100 tons CO2</div>
+      <div>Standard hybrid</div>
+    </div>
+    <div id="label2">
+      <div>20 tons CO2</div>
+      <div>A3 e-tron</div>
+    </div>
+  </div>
 </div>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -41,15 +64,15 @@
 var width = window.innerWidth,
     height = window.innerHeight;
 
-var velocity = [-.01, .01],
-    velocity2 = [.04, .01]
+var velocity = [-.01, .02],
+    velocity2 = [.1, .01]
     t0 = Date.now();
 
 var projection = d3.geo.orthographic()
     .scale(height / 4 - 20);
 
 var projection2 = d3.geo.orthographic()
-    .scale(height / 8 - 20);
+    .scale(height / 9 - 20);
 
 var canvas = d3.selectAll("#geodesic").append("canvas")
     .attr("width", width)
@@ -64,33 +87,33 @@ var context2 = canvas2.node().getContext("2d");
 
 // context.strokeStyle = "gray";
 context.strokeStyle = "red";
-context.lineWidth = .3;
+context.lineWidth = .25;
 
 context2.strokeStyle = "black"
-context2.lineWidth = .3
+context2.lineWidth = .12
 
 var faces;
 
 var output = d3.select("output");
 
 // var inputOne = d3.select("input#one")
-//     .on("change", function() { geodesic(context, +this.value); })
-//     .each(function() { geodesic(context, +this.value); });
+//     .on("change", function() { geodesic(context, +this.value, projection); })
+//     .each(function() { geodesic(context, +this.value, projection); });
 
 // var inputTwo = d3.select("input#two")
-//     .on("change", function() { geodesic(context2, +this.value); })
-//     .each(function() { geodesic(context2, +this.value); });
+//     .on("change", function() { geodesic(context2, +this.value, projection2); })
+//     .each(function() { geodesic(context2, +this.value, projection2); });
 
-geodesic(context, 3, projection2)
-geodesic(context2, 4, projection)
+// geodesic(context, 3, projection2)
+// geodesic(context2, 4, projection)
 
 //animate rotation
 d3.timer(function() {
   var time = Date.now() - t0;
   projection.rotate([time * velocity[0], time * velocity[1]]);
   projection2.rotate([time * velocity2[0], time * velocity2[1]])
-  geodesic(context, 3, projection2)
-  geodesic(context2, 4, projection)
+  geodesic(context, 2, projection2)
+  geodesic(context2, 3, projection)
   // redraw(context);
   // redraw(context2);
 });
@@ -118,7 +141,7 @@ function redraw(surface, size) {
   surface.beginPath();
   faces.forEach(function(d) {
     // if (d.visible) {
-    //   drawTriangle(d.polygon);
+    //   drawTriangle(surface, d.polygon);
     // }
     drawTriangle(surface, d.polygon);
   });
