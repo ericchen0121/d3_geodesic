@@ -17,14 +17,13 @@ $.widget 'custom.infographicSphere',
     @context = @canvas.node().getContext('2d')
 
     @setOptions()
-    d3.timer(@timerFunc())
+    d3.timer( =>
+      time = Date.now() + 100 - @timeZero
+      @projection.rotate([time * @options.velocity[0], time * @options.velocity[1]])
+      @geodesic @context, @options.subdivision, @projection
+    )
 
   _init: ->
-
-  timerFunc: ->
-    time = Date.now() - @timeZero
-    @projection.rotate([time * @options.velocity[0], time * @options.velocity[1]])
-    @geodesic @context, @options.subdivision, @projection
 
   setOptions: ->
     @canvas.attr('width', @options.width)
@@ -43,7 +42,7 @@ $.widget 'custom.infographicSphere',
     @redraw(surface, size)
 
   redraw: (surface, size) ->
-    surface.clearRect(0, 0, @width, @height)
+    surface.clearRect(0, 0, @options.width, @options.height)
 
     @faces.forEach (d) =>
       d.polygon[0] = size d[0]

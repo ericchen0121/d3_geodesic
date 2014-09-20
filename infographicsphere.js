@@ -19,15 +19,16 @@
       this.canvas = d3.select("#" + elId).append('canvas');
       this.context = this.canvas.node().getContext('2d');
       this.setOptions();
-      return d3.timer(this.timerFunc());
+      return d3.timer((function(_this) {
+        return function() {
+          var time;
+          time = Date.now() + 100 - _this.timeZero;
+          _this.projection.rotate([time * _this.options.velocity[0], time * _this.options.velocity[1]]);
+          return _this.geodesic(_this.context, _this.options.subdivision, _this.projection);
+        };
+      })(this));
     },
     _init: function() {},
-    timerFunc: function() {
-      var time;
-      time = Date.now() - this.timeZero;
-      this.projection.rotate([time * this.options.velocity[0], time * this.options.velocity[1]]);
-      return this.geodesic(this.context, this.options.subdivision, this.projection);
-    },
     setOptions: function() {
       this.canvas.attr('width', this.options.width).attr('height', this.options.height);
       this.context.strokeStyle = this.options.strokeStyle;
@@ -44,7 +45,7 @@
       return this.redraw(surface, size);
     },
     redraw: function(surface, size) {
-      surface.clearRect(0, 0, this.width, this.height);
+      surface.clearRect(0, 0, this.options.width, this.options.height);
       this.faces.forEach((function(_this) {
         return function(d) {
           d.polygon[0] = size(d[0]);
