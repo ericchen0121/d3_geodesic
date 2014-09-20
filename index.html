@@ -44,6 +44,7 @@
 <div class="wrapper">
   <div id="geodesic"></div>
   <div id="geodesic2"></div>
+  <div id="geodesic3"></div>
   <div class='content'>
     <div id="label1">
       <div>100 tons CO2</div>
@@ -65,14 +66,18 @@ var width = window.innerWidth,
     height = window.innerHeight;
 
 var velocity = [-.01, .02],
-    velocity2 = [.1, .01]
+    velocity2 = [.1, .04],
+    velocity3 = [.3, .04],
     t0 = Date.now();
 
 var projection = d3.geo.orthographic()
-    .scale(height / 4 - 20);
+    .scale(height / 3 - 20);
 
 var projection2 = d3.geo.orthographic()
-    .scale(height / 9 - 20);
+    .scale(height / 7 - 20);
+
+var projection3 = d3.geo.orthographic()
+    .scale(height / 13 - 20);
 
 var canvas = d3.selectAll("#geodesic").append("canvas")
     .attr("width", width)
@@ -82,15 +87,23 @@ var canvas2 = d3.selectAll("#geodesic2").append("canvas")
     .attr("width", width)
     .attr("height", height);
 
+var canvas3 = d3.selectAll("#geodesic3").append("canvas")
+    .attr("width", width)
+    .attr("height", height);
+
 var context = canvas.node().getContext("2d");
 var context2 = canvas2.node().getContext("2d");
+var context3 = canvas3.node().getContext("2d");
 
 // context.strokeStyle = "gray";
 context.strokeStyle = "red";
 context.lineWidth = .25;
 
 context2.strokeStyle = "black"
-context2.lineWidth = .12
+context2.lineWidth = .22
+
+context3.strokeStyle = "blue"
+context3.lineWidth = .25
 
 var faces;
 
@@ -112,8 +125,10 @@ d3.timer(function() {
   var time = Date.now() - t0;
   projection.rotate([time * velocity[0], time * velocity[1]]);
   projection2.rotate([time * velocity2[0], time * velocity2[1]])
+  projection3.rotate([time * velocity3[0], time * velocity3[1]])
   geodesic(context, 2, projection2)
   geodesic(context2, 3, projection)
+  geodesic(context3, 5, projection3)
   // redraw(context);
   // redraw(context2);
 });
