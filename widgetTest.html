@@ -58,10 +58,27 @@
 </div>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
 <script src="d3geodesic.js"></script>
 <script src="infographicsphere.js"></script>
-<!-- <script src="http://d3js.org/d3.geodesic.v0.min.js"></script> -->
 <script>
+    $( "#geodesic" ).infographicSphere()
+    $( "#geodesic2" ).infographicSphere({
+      strokeStyle: 'blue',
+      subdivision: 3,
+      scaleHeight: 0.22
+    })
+    $( "#geodesic3" ).infographicSphere({
+      strokeStyle: 'green',
+      subdivision: 2,
+      scaleHeight: 0.07
+    })
+</script>
+
+
+<!-- <script src="http://d3js.org/d3.geodesic.v0.min.js"></script> -->
+<!-- <script>
 
 var width = window.innerWidth,
     height = window.innerHeight;
@@ -186,3 +203,4 @@ function geodesic(surface, subdivision, size) {
 }
 
 </script>
+ -->
